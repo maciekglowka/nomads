@@ -43,6 +43,9 @@ pub struct Position(pub Hex);
 #[derive(Component)]
 pub struct Tile(pub TileKind);
 
+#[derive(Component)]
+pub struct Worker;
+
 // helper fns
 
 pub fn insert_data_components(object: &mut EntityCommands, value: &serde_yaml::Value) {

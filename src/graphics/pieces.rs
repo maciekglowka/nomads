@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::components::{Position, Piece};
+use crate::common::components::{Position, Piece, Worker};
 use super::{
     GraphicsAssets, TILE_SIZE, PIECE_Z,
     math::hex_to_v3
@@ -8,12 +8,13 @@ use super::{
 
 pub fn spawn_piece_renderer(
     mut commands: Commands,
-    query: Query<(Entity, &Position, &Piece), Added<Piece>>,
+    query: Query<(Entity, &Position, Option<&Worker>), (Added<Position>, With<Piece>)>,
     assets: Res<GraphicsAssets>
 ) {
-    for (entity, position, piece) in query.iter() {
-        // only camp for now
-        let mut sprite = TextureAtlasSprite::new(0);
+    for (entity, position, worker) in query.iter() {
+        // temporary TODO - take info from data module
+        let idx = if worker.is_some() { 1 } else { 0 };
+        let mut sprite = TextureAtlasSprite::new(idx);
         sprite.custom_size = Some(Vec2::splat(TILE_SIZE));
         let v = hex_to_v3(position.0, PIECE_Z);
         commands.entity(entity)

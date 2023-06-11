@@ -16,7 +16,6 @@ pub fn spawn_tile_renderer(
         let Some(tile_data) = data.get(&tile.0) else { continue };
         let mut sprite = TextureAtlasSprite::new(tile_data.sprite.index);
         sprite.custom_size = Some(Vec2::splat(TILE_SIZE));
-        sprite.color = Color::WHITE;
         let v = hex_to_v3(position.0, TILE_Z);
         commands.entity(entity)
             .insert(

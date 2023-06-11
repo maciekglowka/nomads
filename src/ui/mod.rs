@@ -5,6 +5,7 @@ use crate::states::MainState;
 mod assets;
 mod cursor;
 mod events;
+mod workers;
 
 pub use cursor::Cursor;
 
@@ -26,8 +27,8 @@ impl Plugin for UiPlugin {
                 (clear::<cursor::Cursor>, game_end)
                 .in_schedule(OnExit(MainState::Game))
             )
-            .add_system(
-                cursor::cursor_input
+            .add_systems(
+                (cursor::cursor_input, workers::place_worker)
                 .in_set(OnUpdate(GameUiState::Cursor))
             );
     }

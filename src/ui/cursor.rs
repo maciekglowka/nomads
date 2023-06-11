@@ -23,17 +23,23 @@ pub fn cursor_input(
         dir = Some(Hex::new(0, -1));
     }
     if keys.just_pressed(KeyCode::A) {
-        dir = match position.0.q % 2 {
-            0 => Some(Hex::new(-1, 1)),
-            _ => Some(Hex::new(-1, 0))
-        };
+        dir = Some(Hex::new(-1, 0));
     }
     if keys.just_pressed(KeyCode::D) {
-        dir = match position.0.q % 2 {
-            0 => Some(Hex::new(1, 0)),
-            _ => Some(Hex::new(1, -1))
-        };
+        dir = Some(Hex::new(1, 0));
     }
+    // if keys.just_pressed(KeyCode::A) {
+    //     dir = match position.0.q % 2 {
+    //         0 => Some(Hex::new(-1, 1)),
+    //         _ => Some(Hex::new(-1, 0))
+    //     };
+    // }
+    // if keys.just_pressed(KeyCode::D) {
+    //     dir = match position.0.q % 2 {
+    //         0 => Some(Hex::new(1, 0)),
+    //         _ => Some(Hex::new(1, -1))
+    //     };
+    // }
     if let Some(dir) = dir {
         position.0 += dir;
         transform.translation = hex_to_v3(position.0, OVERLAY_Z); 
