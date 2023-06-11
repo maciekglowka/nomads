@@ -1,0 +1,15 @@
+Bush:
+  sprite: 1
+  components:
+    CampSite:
+    Supply:
+      - Food
+Forest:
+  sprite: 0
+  components:
+    Supply:
+      - Energy
+Plains:
+  sprite: 2
+  components:
+    CampSite:

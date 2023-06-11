@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::graphics::{math::hex_to_v3, TILE_SIZE, OVERLAY_Z};
 use crate::hex::Hex;
-use crate::tiles::Position;
+use crate::board::Position;
 
 use super::UiAssets;
 

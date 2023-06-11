@@ -1,13 +1,10 @@
 use bevy::prelude::*;
 
 use crate::states::MainState;
-use crate::tiles::QueueUpdateEvent;
 
 mod assets;
 mod cursor;
-mod elements;
 mod events;
-mod tiles;
 
 pub use cursor::Cursor;
 
@@ -22,31 +19,16 @@ impl Plugin for UiPlugin {
         .add_event::<events::MenuCloseEvent>()
         .add_startup_system(assets::load_assets)
             .add_systems(
-                (cursor::spawn_cursor, game_start, tiles::update_queue_menu)
+                (cursor::spawn_cursor, game_start)
                 .in_schedule(OnEnter(MainState::Game))
             )
             .add_systems(
                 (clear::<cursor::Cursor>, game_end)
                 .in_schedule(OnExit(MainState::Game))
             )
-            .add_systems(
-                (cursor::cursor_input, tiles::add_or_upgrade)
+            .add_system(
+                cursor::cursor_input
                 .in_set(OnUpdate(GameUiState::Cursor))
-            )
-            .add_systems(
-                (
-                    elements::selection_menu::update_menu::<tiles::MenuType>,
-                    elements::selection_menu::close_menu::<tiles::MenuType>,
-                    tiles::on_close_build_menu
-                )
-                .in_set(OnUpdate(GameUiState::BuildMenu))
-            )
-            .add_system(
-                clear::<elements::selection_menu::SelectionMenu<tiles::MenuType>>
-                    .in_schedule(OnExit(GameUiState::BuildMenu))
-            )
-            .add_system(
-                tiles::update_queue_menu.run_if(on_event::<QueueUpdateEvent>())
             );
     }
 }
@@ -56,7 +38,7 @@ pub enum GameUiState {
     #[default]
     None,
     Cursor,
-    BuildMenu
+    // BuildMenu
 }
 
 #[derive(Resource)]

@@ -1,13 +1,16 @@
 use bevy::prelude::*;
 
 mod assets;
+mod board;
 mod camera;
+mod common;
+mod data;
 mod globals;
 mod graphics;
 mod hex;
 mod manager;
+mod player;
 mod states;
-mod tiles;
 mod ui;
 
 fn main() {
@@ -32,9 +35,11 @@ fn main() {
         .insert_resource(ClearColor(Color::BLACK))
         .add_state::<states::MainState>()
         .add_plugin(assets::AssetsPlugin)
+        .add_plugin(board::BoardPlugin)
+        .add_plugin(data::DataPlugin)
         .add_plugin(graphics::GraphicsPlugin)
         .add_plugin(manager::ManagerPlugin)
-        .add_plugin(tiles::TilesPlugin)
+        .add_plugin(player::PlayerPlugin)
         .add_plugin(ui::UiPlugin)
         .add_startup_system(camera::setup)
         .run();
