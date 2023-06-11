@@ -51,6 +51,12 @@ pub struct DataAssets {
     pub tile_data: Handle<tiles::TileAsset>,
 }
 
+#[derive(Deserialize)]
+pub struct SpriteData {
+    pub atlas: String,
+    pub index: usize
+}
+
 #[derive(Clone, Copy, Debug, Deserialize)]
 pub struct RGB(u8, u8, u8);
 

@@ -30,7 +30,7 @@ pub struct TileAsset(pub HashMap<TileKind, TileData>);
 
 #[derive(Deserialize)]
 pub struct TileData {
-    pub sprite: usize,
+    pub sprite: super::SpriteData,
     pub components: serde_yaml::Value
 }
 

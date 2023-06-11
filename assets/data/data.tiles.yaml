@@ -1,15 +1,21 @@
 Bush:
-  sprite: 1
+  sprite:
+    atlas: tiles
+    index: 1
   components:
     CampSite:
     Supply:
       - Food
 Forest:
-  sprite: 0
+  sprite:    
+    atlas: tiles
+    index: 0
   components:
     Supply:
       - Energy
 Plains:
-  sprite: 2
+  sprite:
+    atlas: tiles
+    index: 2
   components:
     CampSite:
