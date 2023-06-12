@@ -5,14 +5,14 @@ Bush:
   components:
     CampSite:
     Supply:
-      - Food
+      Food: 10
 Forest:
   sprite:    
     atlas: tiles
     index: 0
   components:
     Supply:
-      - Energy
+      Energy: 10
 Plains:
   sprite:
     atlas: tiles

@@ -34,6 +34,7 @@ fn main() {
         .insert_resource(Msaa::Off)
         .insert_resource(ClearColor(Color::BLACK))
         .add_state::<states::MainState>()
+        .add_state::<states::GameState>()
         .add_plugin(assets::AssetsPlugin)
         .add_plugin(board::BoardPlugin)
         .add_plugin(data::DataPlugin)

@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use bevy::ecs::system::EntityCommands;
 use serde::Deserialize;
 use serde_yaml;
+use std::collections::HashMap;
 
 use crate::hex::Hex;
 
@@ -19,7 +20,7 @@ use super::enums::{Goods, TileKind};
 pub struct CampSite;
 
 #[derive(Component, Deserialize)]
-pub struct Supply(Vec<Goods>);
+pub struct Supply(pub HashMap<Goods, u32>);
 // impl GameComponent for Supply {
 //     fn description(&self) -> String {
 //         format!("Supplies")

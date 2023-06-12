@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-#[derive(Clone, Copy, Deserialize, Hash, Eq, PartialEq)]
+#[derive(Clone, Copy,Debug, Deserialize, Hash, Eq, PartialEq)]
 pub enum Goods {
     Food,
     Energy
