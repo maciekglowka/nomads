@@ -18,6 +18,9 @@ impl Plugin for GraphicsPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system(assets::load_assets)
             .add_system(pieces::spawn_piece_renderer)
+            .add_system(
+                pieces::remove_piece_renderer.in_base_set(CoreSet::PostUpdate)
+            )
             .add_system(tiles::spawn_tile_renderer);
     }
 }

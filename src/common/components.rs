@@ -44,7 +44,9 @@ pub struct Position(pub Hex);
 pub struct Tile(pub TileKind);
 
 #[derive(Component)]
-pub struct Worker;
+pub struct Worker {
+    pub name: String
+}
 
 // helper fns
 

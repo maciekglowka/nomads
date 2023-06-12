@@ -17,10 +17,13 @@ pub fn spawn_worker(
     mut commands: Commands,
     mut player: ResMut<super::Player>
 ) {
-    let entity = commands.spawn((
-            Piece,
-            Worker
-        ))
-        .id();
-    player.current_worker = Some(entity);
+    for _ in 0..2 {
+        let entity = commands.spawn((
+                Piece,
+                Worker { name: "Stefan".into( )}
+            ))
+            .id();
+        player.workers.push(entity);
+    }
+    // player.current_worker = Some(entity);
 }

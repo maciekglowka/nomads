@@ -1,11 +1,12 @@
 use bevy::prelude::*;
 
+use crate::player::commands::PlaceWorker;
 use crate::states::MainState;
 
 mod assets;
 mod cursor;
+mod elements;
 mod events;
-mod workers;
 
 pub use cursor::Cursor;
 
@@ -28,8 +29,20 @@ impl Plugin for UiPlugin {
                 .in_schedule(OnExit(MainState::Game))
             )
             .add_systems(
-                (cursor::cursor_input, workers::place_worker)
+                (cursor::move_cursor, cursor::cursor_action)
                 .in_set(OnUpdate(GameUiState::Cursor))
+            )
+            .add_systems(
+                (
+                    elements::select_menu::update_menu::<Entity>,
+                    elements::select_menu::close_menu::<Entity>,
+                    cursor::on_close_menu
+                )
+                .in_set(OnUpdate(GameUiState::WorkerPlaceMenu))
+            )
+            .add_system(
+                clear::<elements::select_menu::SelectMenu<Entity>>
+                    .in_schedule(OnExit(GameUiState::WorkerPlaceMenu))
             );
     }
 }
@@ -39,7 +52,7 @@ pub enum GameUiState {
     #[default]
     None,
     Cursor,
-    // BuildMenu
+    WorkerPlaceMenu
 }
 
 #[derive(Resource)]

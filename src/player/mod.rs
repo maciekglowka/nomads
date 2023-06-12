@@ -18,5 +18,5 @@ impl Plugin for PlayerPlugin {
 
 #[derive(Default, Resource)]
 pub struct Player {
-    pub current_worker: Option<Entity>
+    pub workers: Vec<Entity>
 }

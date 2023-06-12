@@ -28,3 +28,15 @@ pub fn spawn_piece_renderer(
             );
     }
 }
+
+pub fn remove_piece_renderer(
+    mut commands: Commands,
+    mut removed: RemovedComponents<Position>,
+    query: Query<&Piece>
+) {
+    for entity in removed.iter() {
+        // check if it's a piece
+        if query.get(entity).is_err() { continue};
+        commands.entity(entity).remove::<SpriteSheetBundle>();
+    }
+}
