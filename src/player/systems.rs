@@ -31,6 +31,16 @@ pub fn spawn_worker(
     // player.current_worker = Some(entity);
 }
 
+pub fn remove_workers(
+    mut commands: Commands,
+    query: Query<Entity, With<Worker>>
+) {
+    // remove workers from the board
+    for entity in query.iter() {
+        commands.entity(entity).remove::<Position>();
+    }
+}
+
 pub fn collecting_start(
     mut commands: Commands,
     mut goods: ResMut<CollectedGoods>,

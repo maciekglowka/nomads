@@ -69,7 +69,6 @@ pub fn cursor_action(
 
 
 pub fn planning_end(
-    mut commands: Commands,
     keys: Res<Input<KeyCode>>,
     mut ev_planning: EventWriter<PlanningEndEvent>
 ) {

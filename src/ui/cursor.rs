@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::components::Position;
+use crate::common::components::{Camp, Position};
 use crate::graphics::{math::hex_to_v3, TILE_SIZE, OVERLAY_Z};
 use crate::hex::Hex;
 use super::UiAssets;
@@ -47,11 +47,16 @@ pub fn move_cursor(
 
 pub fn spawn_cursor(
     mut commands: Commands,
-    assets: Res<UiAssets>
+    assets: Res<UiAssets>,
+    camp_query: Query<&Position, With<Camp>>
 ) {
+    let hex = match camp_query.get_single() {
+        Ok(p) => p.0,
+        Err(_) => Hex::default()
+    };
+
     let mut sprite = TextureAtlasSprite::new(0);
     sprite.custom_size = Some(Vec2::splat(TILE_SIZE));
-    let hex = Hex::default();
     let v = hex_to_v3(hex, OVERLAY_Z); 
     commands.spawn((
             Cursor,

@@ -21,6 +21,9 @@ impl Plugin for PlayerPlugin {
                 (systems::spawn_camp, systems::spawn_worker)
                 .in_schedule(OnEnter(MainState::Game))
             )
+            .add_system(systems::remove_workers
+                .in_schedule(OnExit(GameState::Relocation))
+            )
             .add_system(systems::collecting_start
                 .in_schedule(OnEnter(GameState::Collecting))
             )

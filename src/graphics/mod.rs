@@ -21,6 +21,7 @@ impl Plugin for GraphicsPlugin {
             .add_system(
                 pieces::remove_piece_renderer.in_base_set(CoreSet::PostUpdate)
             )
+            .add_system(pieces::update_piece_renderer)
             .add_system(tiles::spawn_tile_renderer);
     }
 }

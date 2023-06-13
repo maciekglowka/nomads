@@ -11,6 +11,7 @@ pub enum MainState {
 pub enum GameState {
     #[default]
     None,
+    Relocation,
     Planning,
     Collecting
 }

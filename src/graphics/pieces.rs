@@ -40,3 +40,12 @@ pub fn remove_piece_renderer(
         commands.entity(entity).remove::<SpriteSheetBundle>();
     }
 }
+
+pub fn  update_piece_renderer(
+    mut query: Query<(&Position, &mut Transform), (With<Piece>, Changed<Position>)>
+) {
+    for (position, mut transform) in query.iter_mut() {
+        let v = hex_to_v3(position.0, PIECE_Z);
+        transform.translation = v;
+    }
+}

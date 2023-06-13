@@ -7,6 +7,7 @@ mod cursor;
 mod elements;
 mod events;
 mod planning;
+mod relocation;
 
 pub use cursor::Cursor;
 
@@ -20,15 +21,23 @@ impl Plugin for UiPlugin {
         app.add_state::<GameUiState>()
         .add_event::<events::MenuCloseEvent>()
         .add_startup_system(assets::load_assets)
-            .add_systems((cursor::spawn_cursor, planning_start)
-                .in_schedule(OnEnter(GameState::Planning))
+            .add_systems((cursor::spawn_cursor, relocation_start)
+                .in_schedule(OnEnter(GameState::Relocation))
+            )
+            .add_system(
+                cursor::move_cursor
+                .in_set(OnUpdate(GameUiState::Cursor))
+            )
+            .add_system(
+                relocation::cursor_action
+                .in_set(OnUpdate(GameState::Relocation))
             )
             .add_systems(
                 (clear::<cursor::Cursor>, planning_end)
                 .in_schedule(OnExit(GameState::Planning))
             )
             .add_systems(
-                (cursor::move_cursor, planning::cursor_action, planning::planning_end)
+                (planning::cursor_action, planning::planning_end)
                 .in_set(OnUpdate(GameUiState::Cursor))
                 .in_set(OnUpdate(GameState::Planning))
             )
@@ -62,7 +71,7 @@ pub struct UiAssets {
     pub font: Handle<Font>
 }
 
-fn planning_start(
+fn relocation_start(
     mut next_state: ResMut<NextState<GameUiState>>
 ) {
     next_state.set(GameUiState::Cursor);
