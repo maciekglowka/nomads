@@ -33,6 +33,15 @@ impl Plugin for UiPlugin {
                 .in_set(OnUpdate(GameState::Relocation))
             )
             .add_systems(
+                (
+                    elements::select_menu::update_menu::<()>,
+                    elements::select_menu::close_menu::<()>,
+                    relocation::on_close_menu
+                )
+                .in_set(OnUpdate(GameUiState::CursorMenu))
+                .in_set(OnUpdate(GameState::Relocation))
+            )
+            .add_systems(
                 (clear::<cursor::Cursor>, planning_end)
                 .in_schedule(OnExit(GameState::Planning))
             )
@@ -50,9 +59,12 @@ impl Plugin for UiPlugin {
                 .in_set(OnUpdate(GameUiState::CursorMenu))
                 .in_set(OnUpdate(GameState::Planning))
             )
-            .add_system(
-                clear::<elements::select_menu::SelectMenu<Entity>>
-                    .in_schedule(OnExit(GameUiState::CursorMenu))
+            .add_systems(
+                (
+                    clear::<elements::select_menu::SelectMenu<Entity>>,
+                    clear::<elements::select_menu::SelectMenu<()>>,
+                )
+                .in_schedule(OnExit(GameUiState::CursorMenu))
             );
     }
 }

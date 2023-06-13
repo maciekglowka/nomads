@@ -12,7 +12,6 @@ use super::cursor::Cursor;
 use super::elements::select_menu::{SelectMenu, SelectMenuOption, draw_menu};
 use super::events::MenuCloseEvent;
 
-
 pub fn on_close_menu(
     mut commands: Commands,
     mut ev_menu: EventReader<MenuCloseEvent>,
