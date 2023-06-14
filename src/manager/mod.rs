@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 
+use crate::common::components::{Camp, Position};
 use crate::states::{GameState, MainState};
 
 pub mod events;
@@ -32,7 +33,7 @@ fn game_end(
 }
 
 fn relocation_end(
-    mut next_state: ResMut<NextState<GameState>>
+    mut next_state: ResMut<NextState<GameState>>,
 ) {
     next_state.set(GameState::Planning);
 }

@@ -1,11 +1,12 @@
 use bevy::prelude::*;
 
-use crate::states::GameState;
+use crate::states::{GameState, MainState};
 
 mod assets;
 mod cursor;
 mod elements;
 mod events;
+mod info;
 mod planning;
 mod relocation;
 
@@ -25,6 +26,10 @@ impl Plugin for UiPlugin {
                 .in_schedule(OnEnter(GameState::Relocation))
             )
             .add_system(
+                info::status_bar::draw
+                .in_set(OnUpdate(MainState::Game))
+            )
+            .add_system(
                 cursor::move_cursor
                 .in_set(OnUpdate(GameUiState::Cursor))
             )
@@ -42,7 +47,7 @@ impl Plugin for UiPlugin {
                 .in_set(OnUpdate(GameState::Relocation))
             )
             .add_systems(
-                (clear::<cursor::Cursor>, planning_end)
+                (clear_system::<cursor::Cursor>, planning_end)
                 .in_schedule(OnExit(GameState::Planning))
             )
             .add_systems(
@@ -61,8 +66,8 @@ impl Plugin for UiPlugin {
             )
             .add_systems(
                 (
-                    clear::<elements::select_menu::SelectMenu<Entity>>,
-                    clear::<elements::select_menu::SelectMenu<()>>,
+                    clear_system::<elements::select_menu::SelectMenu<Entity>>,
+                    clear_system::<elements::select_menu::SelectMenu<()>>,
                 )
                 .in_schedule(OnExit(GameUiState::CursorMenu))
             );
@@ -95,9 +100,16 @@ fn planning_end(
     next_state.set(GameUiState::None);
 }
 
-fn clear<T: Component> (
+fn clear_system<T: Component> (
     mut commands: Commands,
     query: Query<Entity, With<T>>
+) {
+    clear::<T>(&mut commands, &query);
+}
+
+fn clear<T: Component> (
+    commands: &mut Commands,
+    query: &Query<Entity, With<T>>
 ) {
     for entity in query.iter() {
         commands.entity(entity).despawn_recursive();

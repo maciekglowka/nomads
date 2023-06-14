@@ -8,11 +8,6 @@ use crate::hex::Hex;
 
 use super::enums::{Goods, TileKind};
 
-
-// pub trait GameComponent: Bundle {
-//     fn description(&self) -> String { "".into() }
-// }
-
 // all the game logic components that can be deserialized
 // from YAML data - to build game objects' properties
 
@@ -20,12 +15,11 @@ use super::enums::{Goods, TileKind};
 pub struct CampSite;
 
 #[derive(Component, Deserialize)]
+pub struct Consume(pub HashMap<Goods, u32>);
+
+#[derive(Component, Deserialize)]
 pub struct Supply(pub HashMap<Goods, u32>);
-// impl GameComponent for Supply {
-//     fn description(&self) -> String {
-//         format!("Supplies")
-//     }
-// }
+
 #[derive(Component, Deserialize)]
 pub struct Upgrade;
 

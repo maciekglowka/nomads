@@ -2,7 +2,6 @@ use bevy::prelude::*;
 use rand::prelude::*;
 use std::collections::HashMap;
 
-use crate::globals::BOARD_RADIUS;
 use crate::hex::{Hex, DIRECTIONS};
 use crate::ui::Cursor;
 
@@ -13,24 +12,31 @@ use crate::common::{
 use crate::data::TileDataParam;
 use super::{
     Board,
+    events::ExpandBoardEvent
 };
 
-pub fn spawn_board(
+pub fn expand_board(
     mut commands: Commands,
     mut board: ResMut<Board>,
-    data: TileDataParam
+    data: TileDataParam,
+    mut ev_board: EventReader<ExpandBoardEvent>
 ) {
-    let mut rng = thread_rng();
-    
-    for q in -BOARD_RADIUS..BOARD_RADIUS {
-        for r in -BOARD_RADIUS..BOARD_RADIUS {
-            let kind = match rng.gen_range(0..=2) {
-                0 => TileKind::Plains,
-                1 => TileKind::Bush,
-                _ => TileKind::Forest
-            };
-            spawn_tile(&mut commands, Hex::new(q, r), kind, &data);
+    for ev in ev_board.iter() {
+        let mut rng = thread_rng();
+        for q in ev.0.q - ev.1..=ev.0.q + ev.1 {
+            for r in ev.0.r - ev.1..=ev.0.r + ev.1 {
+                let hex =  Hex::new(q, r);
+                if board.tiles.contains_key(&hex) { continue };
+                let kind = match rng.gen_range(0..=2) {
+                    0 => TileKind::Plains,
+                    1 => TileKind::Bush,
+                    _ => TileKind::Forest
+                };
+                let entity = spawn_tile(&mut commands, hex, kind, &data);
+                board.tiles.insert(hex, entity);
+            }
         }
+
     }
 }
 

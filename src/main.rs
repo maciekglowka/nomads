@@ -43,5 +43,6 @@ fn main() {
         .add_plugin(player::PlayerPlugin)
         .add_plugin(ui::UiPlugin)
         .add_startup_system(camera::setup)
+        .add_system(camera::update)
         .run();
 }

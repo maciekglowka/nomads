@@ -21,6 +21,10 @@ impl Plugin for PlayerPlugin {
                 (systems::spawn_camp, systems::spawn_worker)
                 .in_schedule(OnEnter(MainState::Game))
             )
+            .add_system(
+                systems::expand_board
+                .in_set(OnUpdate(MainState::Game))
+            )
             .add_system(systems::remove_workers
                 .in_schedule(OnExit(GameState::Relocation))
             )
@@ -32,6 +36,9 @@ impl Plugin for PlayerPlugin {
             )
             .add_system(systems::apply_collect
                 .in_set(CollectingSet::Apply)
+            )
+            .add_system(systems::consume_goods
+                .in_schedule(OnExit(GameState::Collecting))
             );
     }
 }

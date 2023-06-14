@@ -14,3 +14,12 @@ pub fn hex_to_v3( hex: Hex, z: f32) -> Vec3 {
     let relative_z = z - 0.1 * hex.r as f32 - 0.04 * hex.q as f32;
     hex_to_v2(hex).extend(relative_z)
 }
+
+pub fn move_towards(origin: Vec3, target: Vec3, max_delta: f32) -> Vec3 {
+    let a = target - origin;
+    let l = a.length();
+    if (l <= max_delta || l == 0.) {
+        return target
+    }
+    origin + a / l * max_delta
+} 

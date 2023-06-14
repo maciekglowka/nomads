@@ -1,6 +1,9 @@
 use bevy::prelude::*;
+use std::collections::HashMap;
 
-use crate::common::components::{Camp, Piece, Position, Worker, Supply};
+use crate::board::events::ExpandBoardEvent;
+use crate::common::components::{Camp, Consume, Piece, Position, Worker, Supply};
+use crate::common::enums::Goods;
 use crate::hex::Hex;
 use crate::manager::events::CollectingEndEvent;
 
@@ -16,14 +19,23 @@ pub fn spawn_camp(
     ));
 }
 
+pub fn expand_board(
+    mut ev_board: EventWriter<ExpandBoardEvent>,
+    camp_query: Query<&Position, (With<Camp>, Changed<Position>)>
+) {
+    let Ok(position) = camp_query.get_single() else { return };
+    ev_board.send(ExpandBoardEvent(position.0, 4));
+}
+
 pub fn spawn_worker(
     mut commands: Commands,
     mut player: ResMut<super::Player>
 ) {
-    for _ in 0..2 {
+    for i in 0..2 {
         let entity = commands.spawn((
+                Consume(HashMap::from_iter([(Goods::Food, 2), (Goods::Energy, 1)])),
                 Piece,
-                Worker { name: "Stefan".into( )}
+                Worker { name: format!("Stefan {}", i)}
             ))
             .id();
         player.workers.push(entity);
@@ -88,4 +100,16 @@ pub fn apply_collect(
         *cur += *quantity as u32;
     }
     goods.0 = Vec::new();
+}
+
+pub fn consume_goods(
+    mut player: ResMut<Player>,
+    consumer_query: Query<&Consume>
+) {
+    for consume in consumer_query.iter() {
+        for (kind, quantity) in consume.0.iter() {
+            let cur = player.goods.entry(*kind).or_insert(0);
+            *cur = cur.saturating_sub(*quantity);
+        }
+    }
 }
