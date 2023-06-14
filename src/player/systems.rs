@@ -33,14 +33,13 @@ pub fn spawn_worker(
 ) {
     for i in 0..2 {
         let entity = commands.spawn((
-                Consume(HashMap::from_iter([(Goods::Food, 2), (Goods::Energy, 1)])),
+                Consume(HashMap::from_iter([(Goods::Food, 4), (Goods::Energy, 3)])),
                 Piece,
                 Worker { name: format!("Stefan {}", i)}
             ))
             .id();
         player.workers.push(entity);
     }
-    // player.current_worker = Some(entity);
 }
 
 pub fn remove_workers(
@@ -67,6 +66,31 @@ pub fn collecting_start(
 }
 
 pub fn worker_collect(
+    mut commands: Commands,
+    mut goods: ResMut<CollectedGoods>,
+    worker_query: Query<(Entity, &Position), (With<Worker>, With<Collecting>)>,
+    supply_query: Query<(&Position, &Supply)>,
+    mut ev_collect: EventWriter<CollectingEndEvent>
+) {
+    for (entity, position) in worker_query.iter() {
+        commands.entity(entity).remove::<Collecting>();
+
+        let supplier = supply_query.iter()
+            .find(|(p, _)| p.0 == position.0);
+
+        let Some((_, supply)) = supplier else { continue };
+        goods.0 = supply.0.iter()
+            .map(|(k, v)| (*k, *v as i32))
+            .collect();
+
+        // select only one at a time
+        return;
+    }
+    // if we get here it means there is no workers left
+    ev_collect.send(CollectingEndEvent);
+}
+
+pub fn worker_craft(
     mut commands: Commands,
     mut goods: ResMut<CollectedGoods>,
     worker_query: Query<(Entity, &Position), (With<Worker>, With<Collecting>)>,

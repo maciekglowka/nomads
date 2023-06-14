@@ -27,10 +27,12 @@ pub fn expand_board(
             for r in ev.0.r - ev.1..=ev.0.r + ev.1 {
                 let hex =  Hex::new(q, r);
                 if board.tiles.contains_key(&hex) { continue };
-                let kind = match rng.gen_range(0..=2) {
+                let kind = match rng.gen_range(0..=4) {
                     0 => TileKind::Plains,
                     1 => TileKind::Bush,
-                    _ => TileKind::Forest
+                    2 => TileKind::Forest,
+                    3 => TileKind::Hills,
+                    _ => TileKind::Forge
                 };
                 let entity = spawn_tile(&mut commands, hex, kind, &data);
                 board.tiles.insert(hex, entity);

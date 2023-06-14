@@ -19,3 +19,21 @@ Plains:
     index: 2
   components:
     CampSite:
+Hills:
+  sprite:
+    atlas: tiles
+    index: 3
+  components:
+    Supply:
+      Ore: 5
+Forge:
+  sprite:
+    atlas: tiles
+    index: 4
+  components:
+    Craft:
+      materials:
+        Ore: 5
+        Energy: 5
+      products:
+        Tools: 3

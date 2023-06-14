@@ -18,10 +18,13 @@ pub struct CampSite;
 pub struct Consume(pub HashMap<Goods, u32>);
 
 #[derive(Component, Deserialize)]
-pub struct Supply(pub HashMap<Goods, u32>);
+pub struct Craft {
+    pub materials: HashMap<Goods, u32>,
+    pub products: HashMap<Goods, u32>
+}
 
 #[derive(Component, Deserialize)]
-pub struct Upgrade;
+pub struct Supply(pub HashMap<Goods, u32>);
 
 
 // other common components that are attached depending on the context
@@ -52,6 +55,8 @@ pub fn insert_data_components(object: &mut EntityCommands, value: &serde_yaml::V
         let Some(name) = name.as_str() else { continue };
         match name {
             "CampSite" => insert_single::<CampSite>(object, data),
+            "Consume" => insert_single::<Consume>(object, data),
+            "Craft" => insert_single::<Craft>(object, data),
             "Supply" => insert_single::<Supply>(object, data),
             _ => continue
         };
